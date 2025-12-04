@@ -1,0 +1,16 @@
+{
+  "width": 4.0,
+  "height": 2.0,
+  "resolution": 0.02,
+  "origin_x": -2.0,
+  "origin_y": -1.0,
+  "grid_width": 200,
+  "grid_height": 100,
+  "robot_pose": {
+    "world_x": 0.14306625772397702,
+    "world_y": 0.32110770018462076,
+    "theta": 119.13673438958271,
+    "grid_x": 107,
+    "grid_y": 66
+  }
+}

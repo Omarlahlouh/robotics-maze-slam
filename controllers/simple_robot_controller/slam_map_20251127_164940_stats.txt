@@ -1,0 +1,15 @@
+SLAM Map Statistics
+===================
+Timestamp: 20251127_164940
+Robot Position: x=0.932m, y=-0.492m, theta=-59.6бу
+
+Map Info:
+Size: 4.0m x 2.0m
+Resolution: 0.02m
+Grid: 200 x 100 cells
+
+Exploration:
+Explored: 85.9%
+Free cells: 16228
+Occupied cells: 956
+Unknown cells: 2816

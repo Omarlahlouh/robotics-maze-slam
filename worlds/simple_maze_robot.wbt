@@ -1,0 +1,155 @@
+#VRML_SIM R2023a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/apartment_structure/protos/Wall.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/appearances/protos/Parquetry.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/solids/protos/SolidPipe.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/floors/protos/Floor.proto"
+EXTERNPROTO "../protos/SimpleBot.proto"
+
+WorldInfo {
+  info [
+    "Simple SLAM Robot in Maze Environment"
+    "Stage 1: Basic differential drive robot with keyboard control"
+  ]
+  title "SLAM Robot - Stage 1"
+}
+
+Viewpoint {
+  orientation 0.24895365520926419 0.5286795807698881 -0.8114924389265263 1.0515943492961475
+  position -2.2479415507248706 2.2380923274276854 1.9226860151213538
+  follow "SimpleBot"
+}
+
+TexturedBackground {
+}
+
+TexturedBackgroundLight {
+}
+
+RectangleArena {
+  floorSize 4 2
+  floorAppearance Parquetry {
+    type "light strip"
+  }
+}
+
+# Simple robot at starting position
+SimpleBot {
+  translation -1.5 0.1 0.0205
+  name "SimpleBot"
+  controller "simple_robot_controller"
+}
+
+# Maze walls (copied from Lab5)
+Wall {
+  translation 0 -0.38 0
+  size 0.01 1.25 0.1
+}
+Wall {
+  translation 0 0.825 0
+  name "wall(7)"
+  size 0.01 0.35 0.1
+}
+Wall {
+  translation -0.51 0.5 0
+  name "wall(5)"
+  size 0.01 0.7 0.1
+}
+Wall {
+  translation -0.75 0.25 0
+  name "wall(6)"
+  size 0.01 0.7 0.1
+}
+Wall {
+  translation 0.25 0.6 0
+  name "wall(1)"
+  size 0.01 0.8 0.1
+}
+Wall {
+  translation -0.25 0 0
+  name "wall(2)"
+  size 0.01 1.2 0.1
+}
+Wall {
+  translation 0.75 0 0
+  name "wall(3)"
+  size 0.01 1.5 0.1
+}
+Wall {
+  translation -0.25 -0.250003 0
+  rotation 0 0 1 1.5708
+  name "wall(4)"
+  size 0.01 1.0 0.1
+}
+Wall {
+  translation -1.26 -0.570003 0
+  rotation 0 0 1 1.5708
+  name "wall(8)"
+  size 0.01 1 0.1
+}
+Wall {
+  translation 0.75 -0.740003 0
+  rotation 0 0 1 1.5708
+  name "wall(14)"
+  size 0.01 0.25 0.1
+}
+Wall {
+  translation -1.43 0.689997 0
+  rotation 0 0 1 1.5708
+  name "wall(9)"
+  size 0.01 0.5 0.1
+}
+Wall {
+  translation 0.6 -0.500003 0
+  rotation 0 0 1 1.5708
+  name "wall(10)"
+  size 0.01 0.3 0.1
+}
+Wall {
+  translation 0.38 0.259997 0
+  rotation 0 0 1 1.5708
+  name "wall(11)"
+  size 0.01 0.25 0.1
+}
+Wall {
+  translation 0.38 0.499997 0
+  rotation 0 0 1 1.5708
+  name "wall(12)"
+  size 0.01 0.25 0.1
+}
+Wall {
+  translation 0.63 0.749997 0
+  rotation 0 0 1 1.5708
+  name "wall(13)"
+  size 0.01 0.25 0.1
+}
+
+# Goal marker (red pipe from Lab5)
+SolidPipe {
+  translation 1.38 0 -1.40715e-06
+  rotation 0 1 0 -1.5707953071795862
+  name "goal_pipe"
+  height 0.5
+  radius 0.2
+  thickness 0.01
+  appearance PBRAppearance {
+    baseColorMap ImageTexture {
+      url [
+        "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/default/worlds/textures/tagged_wall.jpg"
+      ]
+      repeatS FALSE
+    }
+    roughness 0.5
+    metalness 0
+  }
+}
+
+# Starting position marker
+Floor {
+  translation -1.5 0.1 0.001
+  size 0.3 0.3
+  tileSize 0.2 0.2
+}

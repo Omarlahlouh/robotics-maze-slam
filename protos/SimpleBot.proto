@@ -1,0 +1,277 @@
+#VRML_SIM R2023a utf8
+# Simple two-wheeled differential drive robot for SLAM navigation
+
+PROTO SimpleBot [
+  field SFVec3f    translation     0 0 0
+  field SFRotation rotation        0 0 1 0
+  field SFString   name            "SimpleBot"
+  field SFString   controller      "simple_robot_controller"
+  field MFString   controllerArgs  []
+  field SFString   customData      ""
+  field SFBool     supervisor      FALSE
+  field SFBool     synchronization TRUE
+  field MFNode     extensionSlot   []
+]
+{
+  Robot {
+    translation IS translation
+    rotation IS rotation
+    name IS name
+    controller IS controller
+    controllerArgs IS controllerArgs
+    customData IS customData
+    supervisor IS supervisor
+    synchronization IS synchronization
+    children [
+      # Robot body (elevated cylindrical chassis)
+      DEF BODY Transform {
+        translation 0 0 0.015
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColor 0.2 0.6 0.8
+              metalness 0
+              roughness 0.5
+            }
+            geometry Cylinder {
+              height 0.04
+              radius 0.04
+            }
+          }
+        ]
+      }
+      
+      # Left wheel (positioned at body center for stability)
+      DEF LEFT_WHEEL HingeJoint {
+        jointParameters HingeJointParameters {
+          position 0
+          axis 0 1 0
+          anchor 0 -0.037 0
+        }
+        device [
+          RotationalMotor {
+            name "left_motor"
+            maxVelocity 10
+            maxTorque 100
+          }
+          PositionSensor {
+            name "left_encoder"
+          }
+        ]
+        endPoint Solid {
+          translation 0 -0.037 0
+          rotation 1 0 0 1.5708
+          children [
+            DEF WHEEL_SHAPE Shape {
+              appearance PBRAppearance {
+                baseColor 0.3 0.3 0.3
+                metalness 0
+                roughness 0.8
+              }
+              geometry Cylinder {
+                height 0.015
+                radius 0.0205
+              }
+            }
+          ]
+          name "left_wheel"
+          boundingObject USE WHEEL_SHAPE
+          physics Physics {
+            density -1
+            mass 0.05
+          }
+        }
+      }
+      
+      # Right wheel (positioned at body center for stability)
+      DEF RIGHT_WHEEL HingeJoint {
+        jointParameters HingeJointParameters {
+          position 0
+          axis 0 1 0
+          anchor 0 0.037 0
+        }
+        device [
+          RotationalMotor {
+            name "right_motor"
+            maxVelocity 10
+            maxTorque 100
+          }
+          PositionSensor {
+            name "right_encoder"
+          }
+        ]
+        endPoint Solid {
+          translation 0 0.037 0
+          rotation 1 0 0 1.5708
+          children [
+            USE WHEEL_SHAPE
+          ]
+          name "right_wheel"
+          boundingObject USE WHEEL_SHAPE
+          physics Physics {
+            density -1
+            mass 0.05
+          }
+        }
+      }
+      
+      # Front caster wheel (small swivel wheel for stability)
+      DEF FRONT_CASTER HingeJoint {
+        jointParameters HingeJointParameters {
+          position 0
+          axis 0 0 1
+          anchor 0.03 0 -0.0145
+        }
+        endPoint Solid {
+          translation 0.03 0 -0.0145
+          children [
+            HingeJoint {
+              jointParameters HingeJointParameters {
+                position 0
+                axis 0 1 0
+                anchor 0 0 0
+              }
+              endPoint Solid {
+                translation 0 0 0
+                rotation 1 0 0 1.5708
+                children [
+                  Shape {
+                    appearance PBRAppearance {
+                      baseColor 0.4 0.4 0.4
+                      metalness 0.8
+                      roughness 0.3
+                    }
+                    geometry Cylinder {
+                      height 0.008
+                      radius 0.006
+                    }
+                  }
+                ]
+                name "caster_wheel"
+                boundingObject Cylinder {
+                  height 0.008
+                  radius 0.006
+                }
+                physics Physics {
+                  density -1
+                  mass 0.002
+                }
+              }
+            }
+          ]
+          name "caster_fork"
+          physics Physics {
+            density -1
+            mass 0.001
+          }
+        }
+      }
+      
+      # Rear caster wheel (small swivel wheel for rear stability)
+      DEF REAR_CASTER HingeJoint {
+        jointParameters HingeJointParameters {
+          position 0
+          axis 0 0 1
+          anchor -0.03 0 -0.0145
+        }
+        endPoint Solid {
+          translation -0.03 0 -0.0145
+          children [
+            HingeJoint {
+              jointParameters HingeJointParameters {
+                position 0
+                axis 0 1 0
+                anchor 0 0 0
+              }
+              endPoint Solid {
+                translation 0 0 0
+                rotation 1 0 0 1.5708
+                children [
+                  Shape {
+                    appearance PBRAppearance {
+                      baseColor 0.4 0.4 0.4
+                      metalness 0.8
+                      roughness 0.3
+                    }
+                    geometry Cylinder {
+                      height 0.008
+                      radius 0.006
+                    }
+                  }
+                ]
+                name "rear_caster_wheel"
+                boundingObject Cylinder {
+                  height 0.008
+                  radius 0.006
+                }
+                physics Physics {
+                  density -1
+                  mass 0.002
+                }
+              }
+            }
+          ]
+          name "rear_caster_fork"
+          physics Physics {
+            density -1
+            mass 0.001
+          }
+        }
+      }
+      
+      # LiDAR sensor on top of the robot
+      DEF LIDAR Lidar {
+        translation 0 0 0.045
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColor 0.1 0.1 0.1
+              metalness 0.9
+              roughness 0.1
+            }
+            geometry Cylinder {
+              height 0.015
+              radius 0.015
+            }
+          }
+        ]
+        name "lidar"
+        horizontalResolution 360
+        fieldOfView 6.28319
+        verticalFieldOfView 0.1
+        numberOfLayers 1
+        near 0.06
+        minRange 0.06
+        maxRange 5.0
+        type "rotating"
+        noise 0.005
+      }
+      
+      # GPS sensor for accurate positioning
+      GPS {
+        translation 0 0 0.01
+        name "gps"
+      }
+      
+      # Extension slot for future sensors
+      Group {
+        children IS extensionSlot
+      }
+    ]
+    name IS name
+    boundingObject Transform {
+      translation 0 0 0.015
+      children [
+        Cylinder {
+          height 0.04
+          radius 0.04
+        }
+      ]
+    }
+    physics Physics {
+      density -1
+      mass 0.5
+      centerOfMass [0 0 0.01]
+    }
+  }
+}

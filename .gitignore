@@ -1,0 +1,17 @@
+# Python virtual environments
+venv310/
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Webots stuff
+*/.webots_cache/
+logs/
+*.log
+
+# macOS junk
+.DS_Store
