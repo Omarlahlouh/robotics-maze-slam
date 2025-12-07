@@ -8,10 +8,31 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Webots stuff
+# Webots cache + logs
 */.webots_cache/
 logs/
 *.log
 
-# macOS junk
+# macOS junk files
 .DS_Store
+
+# Torch / Large files
+*.pt
+*.pth
+*.npz
+
+# Robot-generated maps and temporary files
+*.png
+*.jpg
+*.npy
+slam_map_*.npy
+
+# Jupyter notebooks checkpoints (if any)
+.ipynb_checkpoints/
+
+# VSCode settings
+.vscode/
+
+# Logger + ML training data
+controllers/simple_logger/
+ml/data/
