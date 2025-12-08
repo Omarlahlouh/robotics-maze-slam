@@ -492,7 +492,7 @@ class SimpleRobotController:
         # Safety distances
         critical_distance = 0.12  # Stop if obstacle within 12cm
         warning_distance = 0.10   # Slow down if obstacle within 10cm (reduced from 0.20 to avoid over-sensitivity during turns)
-        safe_distance = 0.30      # Alert if obstacle within 30cm
+        safe_distance = 0.15      # Alert if obstacle within 30cm
         
         # Detect obstacles in different sectors
         front_min = float('inf')

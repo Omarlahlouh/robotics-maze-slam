@@ -27,10 +27,10 @@ class AutoExplorer:
         self.state = ExplorerState.EXPLORING
         
         # Exploration parameters
-        self.safe_distance = 0.30  # Safe distance from obstacles (m)
-        self.wall_follow_distance = 0.35  # Preferred distance from wall (m)
+        self.safe_distance = 0.20  # Safe distance from obstacles (m)
+        self.wall_follow_distance = 0.3  # Preferred distance from wall (m)
         self.forward_speed = 0.1   # Increased to match manual speed for faster exploration
-        self.turn_speed = 0.5      # Balanced turn speed
+        self.turn_speed = -0.5      # Balanced turn speed
         
         # State tracking
         self.turn_direction = 1  # 1 for left, -1 for right
@@ -38,7 +38,7 @@ class AutoExplorer:
         self.last_position = (0, 0)
         self.position_history = []
         self.exploration_time = 0
-        self.max_exploration_time = 30000  # ~32 minutes max (30000 * 64ms)
+        self.max_exploration_time = 300000  # ~32 minutes max (30000 * 64ms)
         self.start_position = None  # Record start position for loop closure
         self.min_exploration_time = 500  # Minimum time before checking loop closure
         
@@ -85,8 +85,8 @@ class AutoExplorer:
         front_distance = self._get_sector_min_distance(ranges, -15, 15)
         right_distance = self._get_sector_min_distance(ranges, -90, -60)
         left_distance = self._get_sector_min_distance(ranges, 60, 90)
-        right_front = self._get_sector_min_distance(ranges, -45, -15)
-        left_front = self._get_sector_min_distance(ranges, 15, 45)
+        right_front = self._get_sector_min_distance(ranges, -60, -15)
+        left_front = self._get_sector_min_distance(ranges, 15, 60)
         right_back = self._get_sector_min_distance(ranges, -135, -90)  # Check right back
         
         # Wall following with right-hand rule
@@ -142,64 +142,63 @@ class AutoExplorer:
         angular_vel = 0.0
         
         # Priority 1: Emergency stop - too close to front
-        if front < self.safe_distance * 0.8:
+        if front < self.safe_distance * 0.9:
             # Very close to front wall, stop and turn left sharply
             linear_vel = 0.0
             angular_vel = self.turn_speed
             self.state = ExplorerState.TURNING
             
-        # Priority 2: Corner detection - front obstacle approaching
         elif front < self.safe_distance * 1.2:
             # Approaching corner, check if should turn right (open space on right)
-            if right > self.wall_follow_distance * 2.0 and right_back > self.wall_follow_distance * 1.5:
+            if right_front  < left_front:
                 # Open space on right, turn right to follow wall
-                linear_vel = self.forward_speed * 0.4
-                angular_vel = -self.turn_speed * 0.7
+                linear_vel = self.forward_speed * 0.3
+                angular_vel = self.turn_speed * 1.7
                 self.state = ExplorerState.TURNING
             else:
                 # Turn left (normal corner)
                 linear_vel = self.forward_speed * 0.3
-                angular_vel = self.turn_speed * 0.8
+                angular_vel = -self.turn_speed * 1.7
                 self.state = ExplorerState.TURNING
             
-        # Priority 3: Right front corner - early detection
-        elif right_front < self.safe_distance * 1.2:
-            # Obstacle on right front, turn left early
-            linear_vel = self.forward_speed * 0.5
-            angular_vel = self.turn_speed * 0.7
-            self.state = ExplorerState.AVOIDING_OBSTACLE
-            
-        # Priority 4: Left front corner
-        elif left_front < self.safe_distance * 1.2:
+
+        elif left_front < self.safe_distance * 0.8:
             # Obstacle on left front, turn right
             linear_vel = self.forward_speed * 0.5
-            angular_vel = -self.turn_speed * 0.7
+            angular_vel = -self.turn_speed * 0.5
+            self.state = ExplorerState.AVOIDING_OBSTACLE            
+        # Priority 3: Right front corner - early detection
+        elif right_front < self.safe_distance * 0.8:
+            # Obstacle on right front, turn left early
+            linear_vel = self.forward_speed * 0.5
+            angular_vel = self.turn_speed * 0.5
             self.state = ExplorerState.AVOIDING_OBSTACLE
             
+
         # Priority 5: Too close to right wall
-        elif right < self.wall_follow_distance * 0.6:
+        elif right < self.wall_follow_distance * 0.3:
             # Too close to right wall, turn left
-            linear_vel = self.forward_speed * 0.6
-            angular_vel = self.turn_speed * 0.6
+            linear_vel = self.forward_speed * 0.1
+            angular_vel = self.turn_speed * 0.8
             self.state = ExplorerState.EXPLORING
             
-        # Priority 6: Too far from right wall
-        elif right > self.wall_follow_distance * 1.8:
-            # Too far from right wall, turn right to follow it
-            linear_vel = self.forward_speed * 0.7
-            angular_vel = -self.turn_speed * 0.5
+        elif left < self.wall_follow_distance * 0.3:
+            # Too close to right wall, turn left
+            linear_vel = self.forward_speed * 0.1
+            angular_vel = -self.turn_speed * 0.8
             self.state = ExplorerState.EXPLORING
+            
             
         # Priority 7: Move forward along wall with fine adjustment
         else:
             # Good distance from walls, move forward
             linear_vel = self.forward_speed
-            
+            angular_vel = 0.0
             # Fine-tune to maintain wall distance
-            if right < self.wall_follow_distance * 0.9:
-                angular_vel = self.turn_speed * 0.3  # Turn slightly left
-            elif right > self.wall_follow_distance * 1.1:
-                angular_vel = -self.turn_speed * 0.3  # Turn slightly right
+            if right < self.wall_follow_distance * 0.2:
+                angular_vel = self.turn_speed * 0.1  # Turn slightly left
+            elif right > self.wall_follow_distance * 0.5:
+                angular_vel = -self.turn_speed * 0.1  # Turn slightly right
             else:
                 angular_vel = 0.0
             
@@ -214,7 +213,7 @@ class AutoExplorer:
         
         # Check map exploration percentage
         stats = self.slam_map.get_map_statistics()
-        if stats['explored_percent'] > 85.0:
+        if stats['explored_percent'] > 97.5:
             print(f"Exploration complete: {stats['explored_percent']:.1f}% explored")
             self.state = ExplorerState.COMPLETED
             return True
