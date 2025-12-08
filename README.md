@@ -5,7 +5,9 @@ This project implements a robot that can explore a maze, build a SLAM map, and n
 Our own program：
 
 •   simple_robot_controller.py
+
 •   auto_explorer.py
+
 •   path_planner.py
 
 The system is made of three main parts:
