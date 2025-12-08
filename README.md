@@ -2,6 +2,12 @@ Project Overview:
 
 This project implements a robot that can explore a maze, build a SLAM map, and navigate to the exit inside Webots.
 
+Our own program：
+
+•   simple_robot_controller.py
+•   auto_explorer.py
+•   path_planner.py
+
 The system is made of three main parts:
 
 
@@ -96,9 +102,6 @@ Machine Learning (ML)
 •	Evaluates prediction accuracy (position error, MSE)
 
 ⸻
-
-Pre-Programmed / External Code Used:
-
 Webots Built-In Tools
 
 Used for:
@@ -109,9 +112,7 @@ Used for:
 
 •	LiDAR handling
 
-•	Simulation loop
-
-Utility Scripts (Adapted from Webots Samples)
+Pre-Programmed package:
 
 •	map_visualizer.py
 
@@ -123,6 +124,13 @@ Utility Scripts (Adapted from Webots Samples)
 
 •	visualize_navigation.py
 
+•   navigate_to_exit.py
+
+•   check_coordinates.py
+
+•   map_viewer
+
+•   occupancy_grid_map.py
 Used for debugging, visualisation, and map checking.
 
 Third-Party Libraries:
