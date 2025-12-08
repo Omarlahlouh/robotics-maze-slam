@@ -141,9 +141,9 @@ Authors:
 
 •	Omar Khaled – Machine Learning + Testing
 
-•	Xiangyao Guo – SLAM
+•	Xiangyao Guo – Auto-explorer and robot building
 
-•	Shang Wang – Navigation
+•	Shang Wang – SLAM and sensors
 
 •	Ziad Tarek – Path Planning
 
