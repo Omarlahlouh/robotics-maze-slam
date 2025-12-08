@@ -1,15 +1,28 @@
 Project Overview
 
-This project implements a robot in Webots that can explore a maze, build a SLAM map, and navigate to the exit.
-The system is built from three main parts:
-	1.	SLAM Mapping 
-	2.	Path Planning + Navigation 
-	3.	Machine Learning Model (ML) 
-	•	Trains a small model using real robot logs
-	•	Predicts the next robot position from the current state
-	•	Used only for analysis and testing (not for controlling the robot)
+This project implements a robot that can explore a maze, build a SLAM map, and navigate to the exit inside Webots.
 
-The goal of the project is to show how SLAM, planning, and learning can work together in a full robotic pipeline.
+The system is made of three main parts:
+
+1. SLAM Mapping - Generates an occupancy grid map from LiDAR + odometry.
+   
+2. Path Planning & Navigation
+
+Handles:
+	•	A* search
+	•	Waypoint following
+	•	Robot movement toward the maze exit
+
+3. Machine Learning Model (ML) – Omar’s component
+	•	Trains a small neural network using real robot logs
+	•	Predicts the next robot position from the current state
+	•	Used only for analysis and testing, not for controlling the robot
+
+Goal of the Project
+
+To understand how SLAM, planning, and learning fit together in a full robotic pipeline, and evaluate the behaviour of an autonomous robot navigating a structured maze.
+
+
 
 Project Structure
 
@@ -23,40 +36,68 @@ Implementation Details
 
 Manually Implemented Components
 
-The following parts of the project were written by us specifically for this assignment:
+The following parts of the project were written specifically for this assignment:
+
+Core Robot Logic
 	•	Simple Robot Controller (simple_robot_controller.py)
-Handles keyboard control, exploration mode, SLAM updates, and navigation control.
+Handles:
+	•	Keyboard control
+	•	Exploration mode
+	•	SLAM updates
+	•	Navigation control
+
+Autonomous Exploration
 	•	Auto Explorer (auto_explorer.py)
-Right-hand wall-following behaviour for autonomous maze exploration.
+Implements:
+	•	Right-hand wall-following
+	•	Autonomous maze exploration
+
+Path Planning
 	•	Path Planner (path_planner.py)
-A* search implementation, path smoothing, and waypoint-following logic.
+Provides:
+	•	A* search
+	•	Path smoothing
+	•	Waypoint-following logic
+
+Machine Learning (ML) – Omar Khaled
 	•	ML Scripts (prepare_dataset.py, train_model.py, evaluate_model.py)
-Dataset creation from logs, neural-network training, and evaluation.
-	•	Logger (simple_logger_controller.py)
-Used to record real robot movement logs for training the ML model.
+	•	Builds dataset from real robot logs
+	•	Trains a small neural network
+	•	Predicts next robot motion
+	•	Evaluation and error analysis
+
+⸻
 
 Pre-Programmed / External Code Used
 
-The project also uses several existing tools and helpers:
-	•	Webots built-in API
-Sensors, motors, LiDAR handling, controller structure, robot simulation loop.
-	•	Utility scripts adapted from Webots sample projects:
+The project makes use of several existing tools and libraries:
+
+Webots Built-In Tools
+
+Used for sensors, motors, LiDAR handling, and the simulation loop.
+
+Utility Scripts Adapted from Webots Samples
 	•	map_visualizer.py
 	•	map_editor.py
 	•	map_optimizer.py
 	•	verify_path.py
 	•	visualize_navigation.py
-These were used for debugging, visualisation, and map checking.
-	•	Third-party Python libraries:
+
+Used for:
+	•	Debugging
+	•	Visualisation
+	•	Map checking
+
+Third-Party Libraries
 	•	PyTorch — neural network model + optimisation
 	•	NumPy — dataset handling
 	•	Matplotlib — optional plotting
-	•	Standard Python modules (csv, json, math, etc.)
+	•	Standard Python Modules — csv, json, math, etc.
 
+⸻
 
 Authors
-
-•	Omar Khaled – Machine Learning + Testing
-•	Xiangyao Guo – SLAM
-•	Shang Wang – Navigation
-•	Ziad Tarek – Path Planning
+	•	Omar Khaled – Machine Learning + Testing
+	•	Xiangyao Guo – SLAM
+	•	Shang Wang – Navigation
+	•	Ziad Tarek – Path Planning
