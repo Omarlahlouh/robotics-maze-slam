@@ -1,11 +1,10 @@
-#VRML_SIM R2023a utf8
+#VRML_SIM R2025a utf8
 
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/floors/protos/RectangleArena.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/apartment_structure/protos/Wall.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/appearances/protos/Parquetry.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/solids/protos/SolidPipe.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/floors/protos/Floor.proto"
 EXTERNPROTO "../protos/SimpleBot.proto"
 
@@ -16,34 +15,47 @@ WorldInfo {
   ]
   title "SLAM Robot - Stage 1"
 }
-
 Viewpoint {
-  orientation 0.24895365520926419 0.5286795807698881 -0.8114924389265263 1.0515943492961475
-  position -2.2479415507248706 2.2380923274276854 1.9226860151213538
+  orientation 0.2570069332742983 0.5234748574000236 -0.8123555317217734 1.0541242009949456
+  position -1.200466163036528 2.1705152241958414 2.130956958742422
   follow "SimpleBot"
 }
-
 TexturedBackground {
 }
-
 TexturedBackgroundLight {
 }
-
 RectangleArena {
   floorSize 4 2
   floorAppearance Parquetry {
     type "light strip"
   }
 }
-
-# Simple robot at starting position
 SimpleBot {
-  translation -1.5 0.1 0.0205
-  name "SimpleBot"
-  controller "simple_robot_controller"
+  hidden position_0_0 -7.560174708487466e-12
+  hidden position_0_1 -7.555733816388965e-12
+  hidden position_0_2 -2.613293990906871e-16
+  hidden position_0_3 -3.0637385734828546e-16
+  hidden linearVelocity_0 1.372191025505438e-15 -1.269201623514099e-15 2.842170943040401e-16
+  hidden angularVelocity_0 -4.163336342344644e-15 2.0303785317988817e-15 3.2203911418129513e-14
+  hidden linearVelocity_1 3.894313323576497e-16 -9.750682466175885e-16 3.552702865587418e-16
+  hidden angularVelocity_1 2.2417426039881756e-14 -3.601026972876583e-16 3.2181237826050313e-14
+  hidden linearVelocity_2 -4.0496471172318235e-16 -9.775045972999736e-16 7.815955627538796e-16
+  hidden angularVelocity_2 2.6900911247853263e-14 -3.926173378039486e-16 3.218171770329509e-14
+  hidden position_3_0 -6.244483075909817e-11
+  hidden linearVelocity_3 -1.060176744137885e-17 5.291712719221492e-16 1.0158540675320182e-14
+  hidden angularVelocity_3 -1.5834574184627957e-16 1.2078480864815762e-16 -9.936518703690023e-22
+  hidden rotation_4 1 -6.323954134950271e-11 6.323977364173534e-11 1.5708
+  hidden linearVelocity_4 -1.0597782494968677e-17 1.3940931405015759e-15 -4.052314039881821e-15
+  hidden angularVelocity_4 -4.841088770167833e-13 -1.7662962947512167e-15 -6.6345560113512405e-22
+  hidden position_5_0 -6.131739512611319e-11
+  hidden linearVelocity_5 2.056224689642011e-17 -3.4922497993680135e-15 3.0531133177191805e-15
+  hidden angularVelocity_5 -1.7276617622955481e-16 1.2072929749520276e-16 7.792858540005452e-22
+  hidden rotation_6 1 -6.218169762850489e-11 6.218192603505344e-11 1.5708
+  hidden linearVelocity_6 2.057979272840047e-17 -4.740012336593706e-15 -5.828670879282072e-15
+  hidden angularVelocity_6 9.682177540335665e-13 3.4299654305060863e-15 1.6808441924654571e-22
+  translation -1.5000000000000029 0.10000000369522483 0.021377982496073682
+  rotation -0.9999999999999932 1.0636769603649592e-07 -4.576413139264157e-08 1.8024956476736796e-07
 }
-
-# Maze walls (copied from Lab5)
 Wall {
   translation 0 -0.38 0
   size 0.01 1.25 0.1
@@ -69,7 +81,7 @@ Wall {
   size 0.01 0.8 0.1
 }
 Wall {
-  translation -0.25 0 0
+  translation -0.25 -0.14 0
   name "wall(2)"
   size 0.01 1.2 0.1
 }
@@ -82,7 +94,7 @@ Wall {
   translation -0.25 -0.250003 0
   rotation 0 0 1 1.5708
   name "wall(4)"
-  size 0.01 1.0 0.1
+  size 0.01 1 0.1
 }
 Wall {
   translation -1.26 -0.570003 0
@@ -126,28 +138,6 @@ Wall {
   name "wall(13)"
   size 0.01 0.25 0.1
 }
-
-# Goal marker (red pipe from Lab5)
-SolidPipe {
-  translation 1.38 0 -1.40715e-06
-  rotation 0 1 0 -1.5707953071795862
-  name "goal_pipe"
-  height 0.5
-  radius 0.2
-  thickness 0.01
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/default/worlds/textures/tagged_wall.jpg"
-      ]
-      repeatS FALSE
-    }
-    roughness 0.5
-    metalness 0
-  }
-}
-
-# Starting position marker
 Floor {
   translation -1.5 0.1 0.001
   size 0.3 0.3
