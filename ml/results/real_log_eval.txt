@@ -1,4 +1,4 @@
-Real-log ML model evaluation (Omar)
+Real-log ML model evaluation 
 
 Dataset:
 - Source: logs from simple_logger (Webots run)
