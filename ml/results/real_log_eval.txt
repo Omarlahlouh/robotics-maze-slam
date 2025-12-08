@@ -1,0 +1,16 @@
+Real-log ML model evaluation (Omar)
+
+Dataset:
+- Source: logs from simple_logger (Webots run)
+- Samples: 4941 (state → next state pairs)
+
+Model:
+- 2-layer MLP mapping current state to next state
+- Trained on real SLAM log data
+
+Metrics:
+- MSE (x,y): 0.000007 m^2
+- Mean position error   : 0.22 cm
+- Median position error : 0.20 cm
+- Max position error    : 1.28 cm
+
