@@ -151,14 +151,14 @@ class SimpleRobotController:
         """Replan path from current robot position to goal"""
         goal_x, goal_y = self.navigation_goal
         
-        print(f"📍 Replanning from current position ({self.x:.2f}, {self.y:.2f}) to goal ({goal_x:.2f}, {goal_y:.2f})")
+        print(f"Replanning from current position ({self.x:.2f}, {self.y:.2f}) to goal ({goal_x:.2f}, {goal_y:.2f})")
         
         # Plan new path
         path = self.path_planner.plan_path(self.x, self.y, goal_x, goal_y)
         
         if path:
-            print(f"✅ Path replanned successfully!")
-            print(f"   New waypoints: {len(path)}")
+            print(f"Path replanned successfully!")
+            print(f"New waypoints: {len(path)}")
             path_length = sum([
                 math.sqrt((path[i+1][0] - path[i][0])**2 + (path[i+1][1] - path[i][1])**2)
                 for i in range(len(path) - 1)
@@ -169,11 +169,11 @@ class SimpleRobotController:
             self.visualizer.set_planned_path(path, 0)
             self.navigation_path_loaded = True
         else:
-            print("❌ Failed to replan path!")
-            print("   Possible reasons:")
-            print("   - Current position is in obstacle")
-            print("   - No path exists to goal")
-            print("   Switching back to manual mode")
+            print("Failed to replan path!")
+            print("Possible reasons:")
+            print("- Current position is in obstacle")
+            print("- No path exists to goal")
+            print("Switching back to manual mode")
             self.mode = 1
     
     def load_map_and_path(self, map_file='slam_map_20251128_140658_edited_20251128_141828.npy', 
@@ -207,13 +207,13 @@ class SimpleRobotController:
             self.path_planner.goal_reached = False
             self.navigation_path_loaded = True
             
-            print(f"✓ Path loaded: {path_file}")
-            print(f"  Waypoints: {len(path)}")
-            print(f"  ⏭️  Skipping waypoint 0 (start position), beginning from waypoint 1")
-            print(f"  Path length: {path_data['path_length']:.2f}m")
-            print(f"  Start: ({path_data['start']['x']:.2f}, {path_data['start']['y']:.2f})")
-            print(f"  Goal: ({path_data['goal']['x']:.2f}, {path_data['goal']['y']:.2f})")
-            print("\n✅ Ready for auto navigation! Press '3' to start.")
+            print(f"Path loaded: {path_file}")
+            print(f"Waypoints: {len(path)}")
+            print(f"Skipping waypoint 0 (start position), beginning from waypoint 1")
+            print(f"Path length: {path_data['path_length']:.2f}m")
+            print(f"Start: ({path_data['start']['x']:.2f}, {path_data['start']['y']:.2f})")
+            print(f"Goal: ({path_data['goal']['x']:.2f}, {path_data['goal']['y']:.2f})")
+            print("\nReady for auto navigation! Press '3' to start.")
             
             # Update visualizer with planned path
             self.visualizer.set_planned_path(path, 0)
@@ -221,7 +221,7 @@ class SimpleRobotController:
             return True
             
         except Exception as e:
-            print(f"\n❌ Failed to load map or path: {e}")
+            print(f"\nFailed to load map or path: {e}")
             print("   Make sure files exist in controllers/simple_robot_controller/")
             return False
         
@@ -290,8 +290,8 @@ class SimpleRobotController:
         elif new_mode == 3:
             print("\n=== Mode 3: Auto Navigation ===")
             if not self.loaded_map_file:
-                print("❌ No map loaded!")
-                print("   Please press 'L' to load map first.")
+                print("No map loaded!")
+                print("Please press 'L' to load map first.")
                 self.mode = 1  # Return to manual mode
                 return
             
@@ -306,18 +306,18 @@ class SimpleRobotController:
                     print(f"Distance to planned start: {dist_to_start:.2f}m")
                     
                     if dist_to_start > 0.3:  # More than 30cm away
-                        print("⚠️ Robot position differs from planned start!")
-                        print("   Replanning path from current position...")
+                        print("Robot position differs from planned start!")
+                        print("Replanning path from current position...")
                         self._replan_from_current_position()
                     else:
-                        print("✅ Using loaded navigation path")
-                        print(f"   Waypoints: {len(self.path_planner.current_path)}")
+                        print("Using loaded navigation path")
+                        print(f"Waypoints: {len(self.path_planner.current_path)}")
             else:
-                print("⚠️ No path loaded, planning from current position...")
+                print("No path loaded, planning from current position...")
                 self._replan_from_current_position()
             
-            print("   Robot will navigate to exit automatically")
-            print("   Press 1 to stop and return to manual control")
+            print("Robot will navigate to exit automatically")
+            print("Press 1 to stop and return to manual control")
     
     def differential_drive_kinematics(self, linear_vel, angular_vel):
         """Convert linear and angular velocities to wheel speeds"""
@@ -528,7 +528,7 @@ class SimpleRobotController:
         
         # Critical: Stop if too close to front obstacle
         if front_min < critical_distance:
-            print(f"⚠️ CRITICAL: Front obstacle at {front_min:.2f}m - STOPPING")
+            print(f"CRITICAL: Front obstacle at {front_min:.2f}m - STOPPING")
             linear_vel = 0.0
             # Try to turn away from obstacle
             if left_min > right_min:
@@ -538,7 +538,7 @@ class SimpleRobotController:
         
         # Warning: Slow down if obstacle ahead
         elif front_min < warning_distance:
-            print(f"⚠️ WARNING: Front obstacle at {front_min:.2f}m - SLOWING")
+            print(f"WARNING: Front obstacle at {front_min:.2f}m - SLOWING")
             linear_vel *= 0.3  # Reduce to 30% speed
             # Gentle turn away
             if left_min > right_min:
@@ -551,10 +551,10 @@ class SimpleRobotController:
             # During turns, reduce slowdown effect (obstacle may be wall we're turning away from)
             if is_turning:
                 linear_vel *= 0.99  # Only reduce to 95% speed when turning (minimal impact)
-                print(f"ℹ️ CAUTION: Front obstacle at {front_min:.2f}m (turning)")
+                print(f"CAUTION: Front obstacle at {front_min:.2f}m (turning)")
             else:
                 linear_vel *= 0.9  # Reduce to 60% speed
-                print(f"ℹ️ CAUTION: Front obstacle at {front_min:.2f}m")
+                print(f"CAUTION: Front obstacle at {front_min:.2f}m")
                 
                 # If angular velocity is very small, actively assist with turning
                 # This helps when path planning gives too small turn angle
@@ -563,10 +563,10 @@ class SimpleRobotController:
                     turn_assist = 0.35  # Base assist angle
                     if left_min > right_min + 0.01:  # More space on left
                         angular_vel += turn_assist  # Turn left
-                        print(f"🔄 Turn assist: +{turn_assist} rad/s (left space: {left_min:.2f}m)")
+                        print(f"Turn assist: +{turn_assist} rad/s (left space: {left_min:.2f}m)")
                     elif right_min > left_min + 0.01:  # More space on right
                         angular_vel -= turn_assist  # Turn right
-                        print(f"🔄 Turn assist: -{turn_assist} rad/s (right space: {right_min:.2f}m)")
+                        print(f"Turn assist: -{turn_assist} rad/s (right space: {right_min:.2f}m)")
         
         # SIMPLIFIED SIDE WALL AVOIDANCE - Only for extreme cases (trust path planning)
         # Only act if side wall is critically close (robot body width is ~8cm)
@@ -574,12 +574,12 @@ class SimpleRobotController:
         
         if left_min < side_wall_critical and left_min < right_min:
             # Left wall critically close - gentle correction
-            print(f"🚨 LEFT WALL TOO CLOSE ({left_min:.2f}m) - CORRECTING")
+            print(f"LEFT WALL TOO CLOSE ({left_min:.2f}m) - CORRECTING")
             linear_vel *= 0.7  # Reduce speed slightly
             angular_vel -= 0.2  # Gentle right correction
         elif right_min < side_wall_critical and right_min < left_min:
             # Right wall critically close - gentle correction
-            print(f"🚨 RIGHT WALL TOO CLOSE ({right_min:.2f}m) - CORRECTING")
+            print(f"RIGHT WALL TOO CLOSE ({right_min:.2f}m) - CORRECTING")
             linear_vel *= 0.7  # Reduce speed slightly
             angular_vel += 0.2  # Gentle left correction
         
@@ -590,7 +590,7 @@ class SimpleRobotController:
         
         if abs(linear_vel - original_linear) > 0.01 or abs(angular_vel - original_angular) > 0.01:
             if self._avoidance_log_counter % 10 == 0:  # Log every 10th adjustment
-                print(f"🛡️ Obstacle avoidance: v={linear_vel:.2f} (was {original_linear:.2f}), " +
+                print(f"Obstacle avoidance: v={linear_vel:.2f} (was {original_linear:.2f}), " +
                       f"ω={angular_vel:.2f} (was {original_angular:.2f})")
         
         return linear_vel, angular_vel
@@ -688,7 +688,7 @@ class SimpleRobotController:
                     
                     if time_stuck > self.stuck_threshold and not self.in_recovery_mode:
                         # Robot is stuck for more than threshold time
-                        print(f"\n🆘 ROBOT STUCK DETECTED! Stationary for {time_stuck:.1f}s")
+                        print(f"\nROBOT STUCK DETECTED! Stationary for {time_stuck:.1f}s")
                         print(f"   Position: ({self.x:.2f}, {self.y:.2f})")
                         print(f"   Attempting recovery: Replanning from current position...")
                         

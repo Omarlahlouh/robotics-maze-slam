@@ -350,7 +350,7 @@ class PathPlanner:
             angular_vel = 1.0 * angle_error * corner_factor  # Stronger turning rate
             angular_vel = max(-self.turn_speed, min(self.turn_speed, angular_vel))
             if is_corner:
-                print(f"⚠️ Sharp corner ahead - turning carefully")
+                print(f"Sharp corner ahead - turning carefully")
         elif abs(angle_error) > 0.5:  # > 28 degrees - very significant misalignment
             # Much slower - focus on turning first
             linear_vel = self.max_speed * 0.1  # Only 10% to allow turning
