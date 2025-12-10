@@ -1,6 +1,5 @@
 """
 Automatic Maze Explorer
-Implements wall-following and frontier-based exploration for SLAM
 """
 
 import numpy as np
@@ -17,12 +16,7 @@ class ExplorerState(Enum):
 
 class AutoExplorer:
     def __init__(self, slam_map):
-        """
-        Initialize automatic explorer
-        
-        Args:
-            slam_map: OccupancyGridMap instance
-        """
+
         self.slam_map = slam_map
         self.state = ExplorerState.EXPLORING
         
@@ -48,17 +42,7 @@ class AutoExplorer:
         print("Auto Explorer initialized - Right-hand wall following")
     
     def get_control_command(self, ranges, robot_x, robot_y, robot_theta):
-        """
-        Get control command for autonomous exploration
-        
-        Args:
-            ranges: LiDAR range measurements
-            robot_x, robot_y: Robot position
-            robot_theta: Robot orientation
-            
-        Returns:
-            (linear_vel, angular_vel): Control velocities
-        """
+
         if ranges is None or len(ranges) == 0:
             return 0.0, 0.0
         
@@ -98,16 +82,7 @@ class AutoExplorer:
         return linear_vel, angular_vel
     
     def _get_sector_min_distance(self, ranges, start_angle, end_angle):
-        """
-        Get minimum distance in a sector
-        
-        Args:
-            ranges: LiDAR range measurements
-            start_angle, end_angle: Sector angles in degrees
-            
-        Returns:
-            Minimum distance in sector
-        """
+
         num_points = len(ranges)
         angle_per_point = 360.0 / num_points
         
@@ -129,19 +104,10 @@ class AutoExplorer:
         return 5.0
     
     def _wall_following_control(self, front, right, left, right_front, left_front, right_back):
-        """
-        Wall following control using right-hand rule (improved for corners)
-        
-        Args:
-            front, right, left, right_front, left_front, right_back: Sector distances
-            
-        Returns:
-            (linear_vel, angular_vel): Control velocities
-        """
+
         linear_vel = 0.0
         angular_vel = 0.0
-        
-        # Priority 1: Emergency stop - too close to front
+
         if front < self.safe_distance * 0.9:
             # Very close to front wall, stop and turn left sharply
             linear_vel = 0.0
@@ -149,7 +115,6 @@ class AutoExplorer:
             self.state = ExplorerState.TURNING
             
         elif front < self.safe_distance * 1.2:
-            # Approaching corner, check if should turn right (open space on right)
             if right_front  < left_front:
                 # Open space on right, turn right to follow wall
                 linear_vel = self.forward_speed * 0.3
@@ -166,8 +131,8 @@ class AutoExplorer:
             # Obstacle on left front, turn right
             linear_vel = self.forward_speed * 0.5
             angular_vel = -self.turn_speed * 0.5
-            self.state = ExplorerState.AVOIDING_OBSTACLE            
-        # Priority 3: Right front corner - early detection
+            self.state = ExplorerState.AVOIDING_OBSTACLE
+
         elif right_front < self.safe_distance * 0.8:
             # Obstacle on right front, turn left early
             linear_vel = self.forward_speed * 0.5
@@ -175,7 +140,6 @@ class AutoExplorer:
             self.state = ExplorerState.AVOIDING_OBSTACLE
             
 
-        # Priority 5: Too close to right wall
         elif right < self.wall_follow_distance * 0.3:
             # Too close to right wall, turn left
             linear_vel = self.forward_speed * 0.1
@@ -188,8 +152,7 @@ class AutoExplorer:
             angular_vel = -self.turn_speed * 0.8
             self.state = ExplorerState.EXPLORING
             
-            
-        # Priority 7: Move forward along wall with fine adjustment
+
         else:
             # Good distance from walls, move forward
             linear_vel = self.forward_speed
