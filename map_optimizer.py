@@ -1,6 +1,6 @@
 """
 SLAM Map Optimizer
-优化已建地图，清除误差障碍，恢复可行路线
+Optimize the existing map, remove error obstacles, and restore feasible routes
 """
 
 import numpy as np
@@ -13,80 +13,80 @@ from datetime import datetime
 class MapOptimizer:
     def __init__(self, map_file):
         """
-        初始化地图优化器
+        Initialize the map optimizer
         
         Args:
-            map_file: 地图文件路径 (.npy)
+            map_file: Map file path (.npy)
         """
         print("=" * 60)
-        print("SLAM Map Optimizer - 地图优化工具")
+        print("SLAM Map Optimizer - Map optimization tool")
         print("=" * 60)
         
-        # 加载地图
+        # Load the map
         self.map_file = map_file
         self.grid = np.load(map_file)
-        print(f"\n✓ 地图加载成功: {map_file}")
-        print(f"  网格尺寸: {self.grid.shape}")
+        print(f"\nThe map has loaded successfully: {map_file}")
+        print(f"Grid size: {self.grid.shape}")
         
-        # 加载元数据
+        # Load metadata
         metadata_file = map_file.replace('.npy', '_metadata.json')
         try:
             with open(metadata_file, 'r') as f:
                 self.metadata = json.load(f)
-            print(f"✓ 元数据加载成功")
-            print(f"  分辨率: {self.metadata.get('resolution', 0.02)}m")
-            print(f"  地图尺寸: {self.metadata.get('width', 4.0)}m × {self.metadata.get('height', 2.0)}m")
+            print(f"The metadata has been loaded successfully")
+            print(f"Resolution: {self.metadata.get('resolution', 0.02)}m")
+            print(f"Map size: {self.metadata.get('width', 4.0)}m × {self.metadata.get('height', 2.0)}m")
         except:
-            print("⚠ 未找到元数据文件，使用默认参数")
+            print("The metadata file was not found. Use the default parameters")
             self.metadata = {
                 'resolution': 0.02,
                 'width': 4.0,
                 'height': 2.0
             }
         
-        # 保存原始地图
+        # Save the original map
         self.original_grid = self.grid.copy()
         
-        # 打印统计信息
-        self._print_statistics("原始地图")
+        # Print statistical information
+        self._print_statistics("Original map")
     
-    def _print_statistics(self, label="地图"):
-        """打印地图统计信息"""
+    def _print_statistics(self, label="Map"):
+        """Print the map statistics information"""
         total = self.grid.size
         unknown = np.sum((self.grid >= 0.4) & (self.grid <= 0.6))
         free = np.sum(self.grid < 0.4)
         occupied = np.sum(self.grid > 0.6)
         
-        print(f"\n{label}统计:")
-        print(f"  总栅格数: {total}")
-        print(f"  未知区域: {unknown} ({unknown/total*100:.1f}%)")
-        print(f"  自由空间: {free} ({free/total*100:.1f}%)")
-        print(f"  障碍物: {occupied} ({occupied/total*100:.1f}%)")
-        print(f"  已探索率: {(total-unknown)/total*100:.1f}%")
+        print(f"\n{label}Statistic:")
+        print(f"Total number of grid: {total}")
+        print(f"Unknown area: {unknown} ({unknown/total*100:.1f}%)")
+        print(f"Free space: {free} ({free/total*100:.1f}%)")
+        print(f"Obstacle: {occupied} ({occupied/total*100:.1f}%)")
+        print(f"Explored rate: {(total-unknown)/total*100:.1f}%")
     
     def optimize_pathways(self, erosion_size=1, remove_thin_walls=True, 
                          remove_isolated=True, min_obstacle_size=3):
         """
-        优化可行路线，清除误差障碍
+        Optimize feasible routes and remove error obstacles
         
         Args:
-            erosion_size: 腐蚀操作的结构元素大小（清除薄障碍）
-            remove_thin_walls: 是否移除薄墙（单像素墙）
-            remove_isolated: 是否移除孤立障碍点
-            min_obstacle_size: 最小障碍物尺寸（小于此值的视为噪点）
+            erosion_size: The size of structural elements in corrosion operations (removing thin obstacles)
+            remove_thin_walls: Whether to remove the thin wall (single-pixel wall)
+            remove_isolated: Whether to remove the isolated obstacle points
+            min_obstacle_size: Minimum obstacle size (those less than this value are regarded as noise points)
         """
         print("\n" + "=" * 60)
-        print("开始优化可行路线...")
+        print("Start optimizing feasible routes...")
         print("=" * 60)
         
         optimized = self.grid.copy()
         
-        # 转换为二值图像
+        # Convert to a binary image
         binary_map = optimized > 0.6
         
-        # 1. 移除孤立障碍点
+        # 1. Remove isolated obstacle points
         if remove_isolated:
-            print(f"\n[步骤1] 移除孤立障碍点（连通域分析）...")
+            print(f"\n[Step 1] Remove isolated obstacle points (connected domain analysis)...")
             labeled, num_features = ndimage.label(binary_map)
             
             removed_count = 0
@@ -94,101 +94,101 @@ class MapOptimizer:
                 component = (labeled == i)
                 size = np.sum(component)
                 
-                # 移除小于阈值的连通域
+                # Remove the connected domains that are less than the threshold
                 if size < min_obstacle_size:
-                    optimized[component] = 0.0  # 设为自由空间
+                    optimized[component] = 0.0  # Set it as free space
                     removed_count += 1
             
-            print(f"  ✓ 移除了 {removed_count} 个孤立障碍点")
+            print(f"Removed{removed_count}the isolated obstacle points")
             binary_map = optimized > 0.6
         
-        # 2. 移除薄墙（单像素墙）
+        # 2. Remove thin walls (single-pixel walls)
         if remove_thin_walls:
-            print(f"\n[步骤2] 移除薄墙...")
-            # 检测每个障碍物像素的8邻域
+            print(f"\n[Step 2] Remove the thin wall...")
+            # Detect the 8-neighbors of each obstacle pixel
             thin_wall_mask = np.zeros_like(binary_map)
             
             for i in range(1, binary_map.shape[0] - 1):
                 for j in range(1, binary_map.shape[1] - 1):
                     if binary_map[i, j]:
-                        # 8邻域
+                        # 8 Neighbors
                         neighbors = binary_map[i-1:i+2, j-1:j+2]
-                        obstacle_neighbors = np.sum(neighbors) - 1  # 减去自己
+                        obstacle_neighbors = np.sum(neighbors) - 1  # Subtract oneself
                         
-                        # 如果障碍物邻居很少（<=2），可能是薄墙
+                        # If there are few obstacle neighbors（<=2），it might be a thin wall
                         if obstacle_neighbors <= 2:
                             thin_wall_mask[i, j] = True
             
             removed = np.sum(thin_wall_mask)
             optimized[thin_wall_mask] = 0.0
-            print(f"  ✓ 移除了 {removed} 个薄墙像素")
+            print(f"removed{removed}the thin wall pixels")
             binary_map = optimized > 0.6
         
-        # 3. 腐蚀操作（清除薄障碍）
+        # 3. Corrosion operation (removing thin obstacles)
         if erosion_size > 0:
-            print(f"\n[步骤3] 腐蚀操作（清除薄障碍，尺寸={erosion_size}）...")
+            print(f"\n[Step 3] Corrosion operation (Remove thin obstacles and dimensions={erosion_size}）...")
             structure = np.ones((erosion_size*2+1, erosion_size*2+1))
             eroded = ndimage.binary_erosion(binary_map, structure=structure)
             
             removed = np.sum(binary_map) - np.sum(eroded)
             optimized[binary_map & ~eroded] = 0.0
-            print(f"  ✓ 腐蚀了 {removed} 个边缘障碍像素")
+            print(f"corroded{removed}the edge barrier pixels")
             binary_map = optimized > 0.6
         
-        # 4. 开运算（去除小的突出部分）
-        print(f"\n[步骤4] 开运算（平滑障碍边缘）...")
+        # 4. Open operation (removing small protruding parts)
+        print(f"\n[Step 4] Open operation (smooth the edge of the obstacle)...")
         structure = np.ones((3, 3))
         opened = ndimage.binary_opening(binary_map, structure=structure)
         
         removed = np.sum(binary_map) - np.sum(opened)
         optimized[binary_map & ~opened] = 0.0
-        print(f"  ✓ 平滑了 {removed} 个边缘突出像素")
+        print(f"Smoothed out{removed}the edge protruding pixels")
         
-        # 5. 膨胀主要墙壁（保持结构）
-        print(f"\n[步骤5] 轻微膨胀主要墙壁（保持结构）...")
+        # 5. Expand the main walls (maintain the structure)
+        print(f"\n[Step 5] Slightly expand the main walls (maintain the structure)...")
         binary_map = optimized > 0.6
         structure = np.ones((2, 2))
         dilated = ndimage.binary_dilation(binary_map, structure=structure)
         
-        # 只在确定是自由空间的地方膨胀
+        # It only expands where it is certain to be free space
         free_space = self.original_grid < 0.3
         safe_dilation = dilated & ~free_space
         
         added = np.sum(safe_dilation) - np.sum(binary_map)
         optimized[safe_dilation & ~binary_map] = 0.8
-        print(f"  ✓ 膨胀了 {added} 个墙壁像素（仅在安全区域）")
+        print(f"expanded{added}the wall pixels (only in safe areas)")
         
         self.grid = optimized
         
         print("\n" + "=" * 60)
-        print("✓ 优化完成！")
+        print("Optimization completed!")
         print("=" * 60)
         
-        self._print_statistics("优化后地图")
+        self._print_statistics("Optimized map")
         
-        # 统计改善
+        # Statistical improvement
         original_occupied = np.sum(self.original_grid > 0.6)
         optimized_occupied = np.sum(self.grid > 0.6)
         cleared = original_occupied - optimized_occupied
         
-        print(f"\n改善统计:")
-        print(f"  原始障碍物: {original_occupied} 像素")
-        print(f"  优化后障碍物: {optimized_occupied} 像素")
-        print(f"  清除障碍物: {cleared} 像素 ({cleared/original_occupied*100:.1f}%)")
+        print(f"\nImprove statistics:")
+        print(f"Original obstacle:{original_occupied}Pixel")
+        print(f"Optimized obstacles:{optimized_occupied}Pixel")
+        print(f"Clear the obstacles:{cleared}Pixel ({cleared/original_occupied*100:.1f}%)")
         
         if cleared > 0:
-            print(f"  ✅ 成功清除了 {cleared} 个误差障碍，恢复了可行路线！")
+            print(f"Successfully cleared{cleared}error obstacles and restored the feasible route！")
         else:
-            print(f"  ⚠ 未清除障碍物，可能地图质量已经很好")
+            print(f"The obstacles have not been cleared, so the map quality might already be very good")
     
     def widen_pathways(self, width=2):
         """
-        拓宽通道，确保机器人可以通过
+        Widen the passage to ensure that the robot can pass through
         
         Args:
-            width: 腐蚀宽度（像素）
+            width: Corrosion width (pixels)
         """
-        print(f"\n[额外优化] 拓宽通道（腐蚀 {width} 像素）...")
+        print(f"\n[Additional Optimization] Widen the channel (corrode{width}pixels)...")
         
         binary_map = self.grid > 0.6
         structure = np.ones((width*2+1, width*2+1))
@@ -197,55 +197,55 @@ class MapOptimizer:
         removed = np.sum(binary_map) - np.sum(eroded)
         self.grid[binary_map & ~eroded] = 0.0
         
-        print(f"  ✓ 拓宽了通道，移除 {removed} 个边缘障碍")
+        print(f"The passage was widened，removed{removed}the edge obstacles")
     
     def save_optimized_map(self, suffix="_optimized"):
-        """保存优化后的地图"""
-        # 生成输出文件名
+        """Save the optimized map"""
+        # Generate the output file name
         output_file = self.map_file.replace('.npy', f'{suffix}.npy')
         output_metadata = output_file.replace('.npy', '_metadata.json')
         
-        # 保存地图
+        # Save the map
         np.save(output_file, self.grid)
-        print(f"\n✓ 优化后地图已保存: {output_file}")
+        print(f"\nThe optimized map has been saved: {output_file}")
         
-        # 更新元数据
+        # Update metadata
         self.metadata['optimized'] = True
         self.metadata['optimization_time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         with open(output_metadata, 'w') as f:
             json.dump(self.metadata, f, indent=2)
-        print(f"✓ 元数据已保存: {output_metadata}")
+        print(f"The metadata has been saved: {output_metadata}")
         
         return output_file
     
     def visualize_comparison(self, save_file=None):
-        """可视化对比原始地图和优化后地图"""
+        """Visualize and compare the original map with the optimized map"""
         fig, axes = plt.subplots(1, 3, figsize=(18, 6))
         
-        # 原始地图
+        # Original map
         axes[0].imshow(self.original_grid, cmap='gray_r', origin='lower')
-        axes[0].set_title('原始地图', fontsize=14, fontweight='bold')
-        axes[0].set_xlabel('X (栅格)')
-        axes[0].set_ylabel('Y (栅格)')
+        axes[0].set_title('Original map', fontsize=14, fontweight='bold')
+        axes[0].set_xlabel('X (Grid)')
+        axes[0].set_ylabel('Y (Grid)')
         axes[0].grid(True, alpha=0.3)
         
-        # 优化后地图
+        # Optimized map
         axes[1].imshow(self.grid, cmap='gray_r', origin='lower')
-        axes[1].set_title('优化后地图', fontsize=14, fontweight='bold')
-        axes[1].set_xlabel('X (栅格)')
-        axes[1].set_ylabel('Y (栅格)')
+        axes[1].set_title('Optimized map', fontsize=14, fontweight='bold')
+        axes[1].set_xlabel('X (Grid)')
+        axes[1].set_ylabel('Y (Grid)')
         axes[1].grid(True, alpha=0.3)
         
-        # 差异图（红色=被清除的障碍，绿色=新增的障碍）
+        # Difference graph (red = cleared obstacles, green = newly added obstacles)
         diff = np.zeros((*self.grid.shape, 3))
-        diff[:, :, 1] = (self.original_grid > 0.6) & (self.grid <= 0.6)  # 绿色：清除的障碍
-        diff[:, :, 0] = (self.original_grid <= 0.6) & (self.grid > 0.6)  # 红色：新增的障碍
+        diff[:, :, 1] = (self.original_grid > 0.6) & (self.grid <= 0.6)
+        diff[:, :, 0] = (self.original_grid <= 0.6) & (self.grid > 0.6)
         
         axes[2].imshow(diff, origin='lower')
-        axes[2].set_title('差异图（绿色=清除障碍，红色=新增障碍）', fontsize=14, fontweight='bold')
-        axes[2].set_xlabel('X (栅格)')
-        axes[2].set_ylabel('Y (栅格)')
+        axes[2].set_title('Difference graph (green = Cleared obstacles, red = newly added obstacles）', fontsize=14, fontweight='bold')
+        axes[2].set_xlabel('X (Grid)')
+        axes[2].set_ylabel('Y (Grid)')
         axes[2].grid(True, alpha=0.3)
         
         plt.tight_layout()
@@ -254,7 +254,7 @@ class MapOptimizer:
             save_file = self.map_file.replace('.npy', '_optimization_comparison.png')
         
         plt.savefig(save_file, dpi=150, bbox_inches='tight')
-        print(f"\n✓ 对比图已保存: {save_file}")
+        print(f"\nThe comparison chart has been saved: {save_file}")
         
         plt.show()
         
@@ -262,21 +262,21 @@ class MapOptimizer:
 
 def main():
     if len(sys.argv) < 2:
-        print("使用方法: python map_optimizer.py <地图文件.npy> [选项]")
-        print("\n选项:")
-        print("  --erosion <尺寸>        腐蚀尺寸 (默认: 1)")
-        print("  --min-size <尺寸>       最小障碍物尺寸 (默认: 3)")
-        print("  --widen <宽度>          拓宽通道宽度 (默认: 0)")
-        print("  --no-thin-walls         不移除薄墙")
-        print("  --no-isolated           不移除孤立点")
-        print("\n示例:")
-        print("  python map_optimizer.py slam_map.npy")
-        print("  python map_optimizer.py slam_map.npy --erosion 2 --widen 1")
+        print("Usage method: python map_optimizer.py < map file.npy > [options]")
+        print("\nOptions:")
+        print("--erosion <Size>        Corrosion size (Default: 1)")
+        print("--min-size <Size>       Minimum obstacle size (Default: 3)")
+        print("--widen <Width>         Widen the width of the passage (Default: 0)")
+        print("--no-thin-walls         Not remove the thin wall")
+        print("--no-isolated           Not remove the outliers")
+        print("\nExample:")
+        print("python map_optimizer.py slam_map.npy")
+        print("python map_optimizer.py slam_map.npy --erosion 2 --widen 1")
         sys.exit(1)
     
     map_file = sys.argv[1]
     
-    # 解析参数
+    # Parsing parameters
     erosion_size = 1
     min_obstacle_size = 3
     widen_width = 0
@@ -304,10 +304,10 @@ def main():
             print(f"未知选项: {sys.argv[i]}")
             i += 1
     
-    # 创建优化器
+    # Create an optimizer
     optimizer = MapOptimizer(map_file)
     
-    # 优化地图
+    # Optimize the map
     optimizer.optimize_pathways(
         erosion_size=erosion_size,
         remove_thin_walls=remove_thin_walls,
@@ -315,23 +315,23 @@ def main():
         min_obstacle_size=min_obstacle_size
     )
     
-    # 可选：拓宽通道
+    # Optional: Widen the passage
     if widen_width > 0:
         optimizer.widen_pathways(width=widen_width)
     
-    # 保存优化后的地图
+    # Save the optimized map
     output_file = optimizer.save_optimized_map()
     
-    # 可视化对比
+    # Visual comparison
     optimizer.visualize_comparison()
     
     print("\n" + "=" * 60)
-    print("✅ 所有优化完成！")
+    print("All optimizations completed!")
     print("=" * 60)
-    print(f"\n优化后的地图可用于路径规划:")
-    print(f"  {output_file}")
-    print(f"\n使用 map_viewer.py 查看优化后的地图:")
-    print(f"  python map_viewer.py {output_file}")
+    print(f"\nThe optimized map can be used for path planning:")
+    print(f"{output_file}")
+    print(f"\nUse map_view.py to view the optimized map:")
+    print(f"python map_viewer.py {output_file}")
 
 if __name__ == "__main__":
     main()

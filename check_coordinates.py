@@ -1,5 +1,5 @@
 """
-坐标检查工具 - 检查指定世界坐标在地图中的状态
+Coordinate Checking tool - Check the status of the specified world coordinates on the map
 """
 
 import numpy as np
@@ -11,14 +11,14 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'controllers', 'simple_r
 from occupancy_grid_map import OccupancyGridMap
 
 def check_coordinate(map_file, world_x, world_y):
-    """检查世界坐标在地图中的状态"""
+    """Check the status of the world coordinates on the map"""
     
-    # 加载地图
+    # Load the map
     grid = np.load(map_file)
-    print(f"✓ 地图加载成功: {map_file}")
-    print(f"  网格尺寸: {grid.shape}")
+    print(f"The map has loaded successfully: {map_file}")
+    print(f"Grid size: {grid.shape}")
     
-    # 加载元数据
+    # Load metadata
     metadata_file = map_file.replace('.npy', '_metadata.json')
     try:
         with open(metadata_file, 'r') as f:
@@ -31,38 +31,38 @@ def check_coordinate(map_file, world_x, world_y):
         width = 4.0
         height = 2.0
     
-    # 创建地图对象
+    # Create a map object
     slam_map = OccupancyGridMap(width=width, height=height, resolution=resolution)
     slam_map.grid = grid
     
-    # 转换为栅格坐标
+    # Convert to grid coordinates
     grid_x, grid_y = slam_map.world_to_grid(world_x, world_y)
     
-    print(f"\n坐标检查:")
-    print(f"  世界坐标: ({world_x:.3f}, {world_y:.3f}) m")
-    print(f"  栅格坐标: ({grid_x}, {grid_y})")
+    print(f"\nCoordinate check:")
+    print(f"World coordinate: ({world_x:.3f}, {world_y:.3f}) m")
+    print(f"grid coordinate: ({grid_x}, {grid_y})")
     
-    # 检查是否在地图范围内
+    # Check if it is within the map range
     if not slam_map.is_valid_cell(grid_x, grid_y):
-        print(f"  ❌ 坐标超出地图范围！")
-        print(f"     地图范围: X[{slam_map.origin_x:.2f}, {slam_map.origin_x+slam_map.width:.2f}], "
+        print(f"The coordinates are out of the map range!")
+        print(f"Map range: X[{slam_map.origin_x:.2f}, {slam_map.origin_x+slam_map.width:.2f}], "
               f"Y[{slam_map.origin_y:.2f}, {slam_map.origin_y+slam_map.height:.2f}]")
         return
     
-    # 获取占据值
+    # Obtain the occupied value
     occupancy = grid[grid_y, grid_x]
     
-    print(f"  占据概率: {occupancy:.3f}")
+    print(f"Occupation probability: {occupancy:.3f}")
     
     if occupancy < 0.4:
-        print(f"  ✅ 自由空间（可通行）")
+        print(f"Free space (passable)")
     elif occupancy <= 0.6:
-        print(f"  ⚠️  未知区域")
+        print(f"Unknown area")
     else:
-        print(f"  ❌ 障碍物（不可通行）")
+        print(f"Obstacle (Impassable)")
     
-    # 检查周围区域
-    print(f"\n周围区域检查（3x3）:")
+    # Inspect the surrounding area
+    print(f"\nInspection of the surrounding area（3x3）:")
     for dy in range(-1, 2):
         for dx in range(-1, 2):
             nx, ny = grid_x + dx, grid_y + dy
@@ -76,13 +76,13 @@ def check_coordinate(map_file, world_x, world_y):
                     symbol = '🔴'
                 print(f"  ({nx}, {ny}): {val:.2f} {symbol}", end='')
                 if dx == 0 and dy == 0:
-                    print(" ← 目标", end='')
+                    print(" ← objective", end='')
                 print()
 
 def main():
     if len(sys.argv) < 4:
-        print("使用方法: python check_coordinates.py <地图文件.npy> <x> <y>")
-        print("\n示例:")
+        print("Usage method: python check_coordinates.py <地图文件.npy> <x> <y>")
+        print("\nExample:")
         print("  python check_coordinates.py slam_map.npy 1.75 0.20")
         sys.exit(1)
     
