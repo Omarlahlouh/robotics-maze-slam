@@ -1,0 +1,243 @@
+=== LiDAR Data ===
+Total points: 360
+Valid detections: 360
+Min distance: 0.082m
+Max distance: 1.592m
+Mean distance: 0.389m
+Obstacles (<0.3m): 135
+Closest obstacle: 0.082m at 35.0°
+=== SLAM Map ===
+Explored: 23.3%
+Free cells: 4255
+Occupied cells: 398
+Unknown cells: 15347
+=== Obstacle Verification ===
+Status: Enabled
+Confirmed obstacles: 410
+Pending verification: 207
+Min observations required: 5
+Max observations: 98
+========================================
+Motor speeds: Left=0.74, Right=1.02
+Motor speeds: Left=0.74, Right=1.01
+Motor speeds: Left=0.74, Right=1.01
+Motor speeds: Left=0.74, Right=1.01
+Motor speeds: Left=0.75, Right=1.01
+Motor speeds: Left=0.75, Right=1.01
+Motor speeds: Left=0.75, Right=1.01
+Motor speeds: Left=0.75, Right=1.01
+Motor speeds: Left=0.75, Right=1.01
+Motor speeds: Left=0.75, Right=1.00
+Motor speeds: Left=0.75, Right=1.00
+Motor speeds: Left=0.75, Right=1.00
+Motor speeds: Left=0.76, Right=1.00
+Motor speeds: Left=0.76, Right=1.00
+Motor speeds: Left=0.76, Right=1.00
+Motor speeds: Left=0.76, Right=1.00
+Motor speeds: Left=0.76, Right=1.00
+Motor speeds: Left=0.76, Right=0.99
+Motor speeds: Left=0.76, Right=0.99
+Motor speeds: Left=0.76, Right=0.99
+Motor speeds: Left=0.76, Right=0.99
+Motor speeds: Left=0.77, Right=0.99
+Motor speeds: Left=0.77, Right=0.99
+Motor speeds: Left=0.77, Right=0.99
+Motor speeds: Left=0.77, Right=0.99
+Motor speeds: Left=0.77, Right=0.99
+Motor speeds: Left=0.77, Right=0.99
+Motor speeds: Left=0.77, Right=0.98
+Motor speeds: Left=0.77, Right=0.98
+Motor speeds: Left=0.77, Right=0.98
+Motor speeds: Left=0.77, Right=0.98
+Motor speeds: Left=0.77, Right=0.98
+Motor speeds: Left=0.78, Right=0.98
+Motor speeds: Left=0.78, Right=0.98
+Motor speeds: Left=0.78, Right=0.98
+Motor speeds: Left=0.78, Right=0.98
+Motor speeds: Left=0.78, Right=0.98
+Motor speeds: Left=0.78, Right=0.98
+Motor speeds: Left=0.78, Right=0.98
+Motor speeds: Left=0.78, Right=0.97
+WARNING: 51 LiDAR points < 0.1m (possible self-detection)
+Motor speeds: Left=0.78, Right=0.97
+WARNING: 51 LiDAR points < 0.1m (possible self-detection)
+WARNING: 51 LiDAR points < 0.1m (possible self-detection)
+Motor speeds: Left=0.78, Right=0.97
+WARNING: 51 LiDAR points < 0.1m (possible self-detection)
+WARNING: 51 LiDAR points < 0.1m (possible self-detection)
+Motor speeds: Left=0.78, Right=0.97
+WARNING: 51 LiDAR points < 0.1m (possible self-detection)
+WARNING: 52 LiDAR points < 0.1m (possible self-detection)
+Motor speeds: Left=0.78, Right=0.97
+WARNING: 52 LiDAR points < 0.1m (possible self-detection)
+WARNING: 52 LiDAR points < 0.1m (possible self-detection)
+Motor speeds: Left=0.78, Right=0.97
+WARNING: 52 LiDAR points < 0.1m (possible self-detection)
+WARNING: 52 LiDAR points < 0.1m (possible self-detection)
+Motor speeds: Left=0.79, Right=0.97
+WARNING: 52 LiDAR points < 0.1m (possible self-detection)
+Motor speeds: Left=0.79, Right=0.97
+[NAV] Waypoint 48/75: Target=(0.54,-0.34), Dist=0.176m, AngleErr=-5.8°
+Motor speeds: Left=0.79, Right=0.97
+Motor speeds: Left=0.79, Right=0.97
+Motor speeds: Left=1.39, Right=1.54
+Motor speeds: Left=1.39, Right=1.53
+Motor speeds: Left=1.39, Right=1.54
+Motor speeds: Left=0.79, Right=0.97
+Motor speeds: Left=0.79, Right=0.97
+Motor speeds: Left=1.39, Right=1.54
+Motor speeds: Left=1.39, Right=1.53
+Motor speeds: Left=1.39, Right=1.54
+Motor speeds: Left=1.39, Right=1.54
+Motor speeds: Left=0.79, Right=0.97
+Motor speeds: Left=0.79, Right=0.97
+Motor speeds: Left=1.39, Right=1.54
+Motor speeds: Left=1.39, Right=1.54
+Motor speeds: Left=1.39, Right=1.54
+Motor speeds: Left=0.79, Right=0.97
+Motor speeds: Left=0.79, Right=0.97
+Motor speeds: Left=0.79, Right=0.97
+Motor speeds: Left=1.39, Right=1.54
+Motor speeds: Left=1.39, Right=1.53
+Motor speeds: Left=1.39, Right=1.54
+Motor speeds: Left=0.79, Right=0.97
+Motor speeds: Left=0.79, Right=0.97
+Motor speeds: Left=1.39, Right=1.54
+Motor speeds: Left=1.39, Right=1.54
+Motor speeds: Left=0.79, Right=0.97
+Motor speeds: Left=0.79, Right=0.97
+Motor speeds: Left=0.79, Right=0.97
+Motor speeds: Left=1.39, Right=1.54
+Motor speeds: Left=1.39, Right=1.53
+Motor speeds: Left=1.39, Right=1.54
+Motor speeds: Left=0.79, Right=0.97
+Motor speeds: Left=0.79, Right=0.97
+Motor speeds: Left=0.79, Right=0.97
+Motor speeds: Left=1.39, Right=1.54
+Motor speeds: Left=1.39, Right=1.54
+Motor speeds: Left=0.79, Right=0.97
+Reached waypoint 49/75
+Motor speeds: Left=0.66, Right=1.10
+Motor speeds: Left=0.66, Right=1.10
+Motor speeds: Left=0.66, Right=1.10
+Motor speeds: Left=0.66, Right=1.10
+Motor speeds: Left=0.66, Right=1.09
+Motor speeds: Left=0.66, Right=1.09
+Motor speeds: Left=0.67, Right=1.09
+Motor speeds: Left=0.67, Right=1.09
+Motor speeds: Left=0.67, Right=1.09
+Motor speeds: Left=0.67, Right=1.08
+Motor speeds: Left=0.67, Right=1.08
+[NAV] Waypoint 49/75: Target=(0.52,-0.36), Dist=0.161m, AngleErr=-12.8°
+Motor speeds: Left=0.68, Right=1.08
+Motor speeds: Left=0.68, Right=1.08
+Motor speeds: Left=0.68, Right=1.08
+Motor speeds: Left=0.68, Right=1.07
+=== Robot Status (Mode: Auto Navigate) ===
+Pose: x=0.508m, y=-0.201m, theta=-73.5°
+Velocities: linear=0.02m/s, angular=-0.11rad/s
+Encoders: Left=199.752, Right=204.386
+Navigation Progress: 65.3%
+Current waypoint: 49/75
+Target: (0.520, -0.360), Distance: 0.159m
+=== LiDAR Data ===
+Total points: 360
+Valid detections: 360
+Min distance: 0.073m
+Max distance: 1.618m
+Mean distance: 0.433m
+Obstacles (<0.3m): 116
+Closest obstacle: 0.073m at 85.0°
+=== SLAM Map ===
+Explored: 23.3%
+Free cells: 4255
+Occupied cells: 398
+Unknown cells: 15347
+=== Obstacle Verification ===
+Status: Enabled
+Confirmed obstacles: 410
+Pending verification: 207
+Min observations required: 5
+Max observations: 98
+========================================
+Motor speeds: Left=0.68, Right=1.07
+Motor speeds: Left=0.69, Right=1.07
+Motor speeds: Left=0.69, Right=1.07
+Motor speeds: Left=0.69, Right=1.07
+Motor speeds: Left=0.69, Right=1.06
+Motor speeds: Left=0.69, Right=1.06
+Motor speeds: Left=0.69, Right=1.06
+Motor speeds: Left=0.70, Right=1.06
+Motor speeds: Left=0.70, Right=1.06
+Motor speeds: Left=0.70, Right=1.06
+Motor speeds: Left=0.70, Right=1.05
+Motor speeds: Left=0.70, Right=1.05
+Motor speeds: Left=0.70, Right=1.05
+Motor speeds: Left=0.71, Right=1.05
+Motor speeds: Left=0.71, Right=1.05
+Motor speeds: Left=0.71, Right=1.05
+Motor speeds: Left=0.71, Right=1.05
+Motor speeds: Left=0.71, Right=1.05
+Motor speeds: Left=0.71, Right=1.04
+Motor speeds: Left=0.71, Right=1.04
+Motor speeds: Left=0.71, Right=1.04
+Motor speeds: Left=0.72, Right=1.04
+Motor speeds: Left=0.72, Right=1.04
+Motor speeds: Left=0.72, Right=1.04
+Motor speeds: Left=0.72, Right=1.04
+Motor speeds: Left=0.72, Right=1.03
+Motor speeds: Left=0.72, Right=1.03
+Motor speeds: Left=0.72, Right=1.03
+Motor speeds: Left=0.72, Right=1.03
+Motor speeds: Left=0.73, Right=1.03
+Motor speeds: Left=0.73, Right=1.03
+Motor speeds: Left=0.73, Right=1.03
+Motor speeds: Left=0.73, Right=1.03
+Motor speeds: Left=0.73, Right=1.03
+Motor speeds: Left=0.73, Right=1.02
+Motor speeds: Left=0.73, Right=1.02
+Motor speeds: Left=0.73, Right=1.02
+Motor speeds: Left=0.74, Right=1.02
+Motor speeds: Left=0.74, Right=1.02
+Motor speeds: Left=0.74, Right=1.02
+Motor speeds: Left=0.74, Right=1.02
+Motor speeds: Left=0.74, Right=1.02
+Motor speeds: Left=0.74, Right=1.02
+Motor speeds: Left=0.74, Right=1.01
+Motor speeds: Left=0.74, Right=1.01
+Motor speeds: Left=0.74, Right=1.01
+[NAV] Waypoint 49/75: Target=(0.52,-0.36), Dist=0.150m, AngleErr=-8.5°
+Motor speeds: Left=0.74, Right=1.01
+Motor speeds: Left=0.75, Right=1.01
+Reached waypoint 50/75
+Motor speeds: Left=-0.25, Right=0.83
+Motor speeds: Left=-0.25, Right=0.83
+Motor speeds: Left=-0.25, Right=0.83
+Motor speeds: Left=-0.25, Right=0.83
+Motor speeds: Left=-0.25, Right=0.83
+Motor speeds: Left=-0.25, Right=0.83
+Motor speeds: Left=-0.24, Right=0.83
+Motor speeds: Left=-0.23, Right=0.82
+Motor speeds: Left=-0.22, Right=0.81
+Motor speeds: Left=-0.22, Right=0.80
+Motor speeds: Left=-0.21, Right=0.79
+Motor speeds: Left=-0.20, Right=0.79
+Motor speeds: Left=-0.19, Right=0.78
+Motor speeds: Left=-0.19, Right=0.77
+Motor speeds: Left=-0.18, Right=0.76
+Motor speeds: Left=-0.17, Right=0.76
+Motor speeds: Left=-0.16, Right=0.75
+Motor speeds: Left=-0.01, Right=0.89
+Motor speeds: Left=-0.00, Right=0.88
+Motor speeds: Left=0.00, Right=0.88
+Motor speeds: Left=0.01, Right=0.87
+Motor speeds: Left=0.02, Right=0.86
+Motor speeds: Left=0.02, Right=0.86
+Motor speeds: Left=0.03, Right=0.85
+Motor speeds: Left=0.03, Right=0.84
+Motor speeds: Left=0.04, Right=0.84
+Motor speeds: Left=0.05, Right=0.83
+Motor speeds: Left=0.05, Right=0.83
+Motor speeds: Left=0.06, Right=0.82
+Motor speeds: Left=0.06, Right=0.81
+Motor speeds: Left=0.07, Right=0.81
