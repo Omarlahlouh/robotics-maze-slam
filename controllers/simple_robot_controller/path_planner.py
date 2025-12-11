@@ -135,6 +135,7 @@ class PathPlanner:
         f_score = {start: heuristic(start, goal)}
         
         while open_set:
+            # A* priority queue: expand node with lowest f-score (added clarification by Ziad)
             current = heappop(open_set)[1]
             
             if current == goal:
