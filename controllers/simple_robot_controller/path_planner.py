@@ -147,7 +147,8 @@ class PathPlanner:
                 path.append(start)
                 path.reverse()
                 return path
-            
+                
+            # Expand 8-connected neighbours and skip any that hit obstacles or violate safety margin
             for dx, dy in neighbors:
                 neighbor = (current[0] + dx, current[1] + dy)
                 
