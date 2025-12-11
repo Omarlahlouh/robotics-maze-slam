@@ -208,6 +208,7 @@ class PathPlanner:
         Returns:
             Smoothed path
         """
+        # Add gentle smoothing around sharp corners to help the robot turn more naturally
         if len(path) < 3:
             return path
         
