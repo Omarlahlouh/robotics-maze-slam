@@ -173,7 +173,7 @@ class PathPlanner:
             return path
         
         simplified = [path[0]]
-        
+        # Remove waypoints that lie on a straight line to reduce unnecessary turning
         for i in range(1, len(path) - 1):
             prev = simplified[-1]
             curr = path[i]
