@@ -2,6 +2,7 @@
 Path Planner for Navigation
 Implements A* path planning and path following
 """
+# --- Minor documentation update by Ziad (Path Planning Lead) ---
 
 import numpy as np
 import math
